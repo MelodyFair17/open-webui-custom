@@ -130,6 +130,7 @@
 
 	let selectedTag = '';
 	let selectedConnectionType = '';
+	let selectedCustomCategory = ''; // '', 'gpu', 'cloud', 'rag'
 
 	let ollamaVersion = null;
 	let selectedModelIdx = 0;
@@ -197,6 +198,24 @@
 							return item.model?.direct;
 						}
 					})
+					.filter((item) => {
+						if (selectedCustomCategory === '') {
+							return true;
+						}
+						const modelId = item.model?.id?.toLowerCase() || '';
+						const ownedBy = item.model?.owned_by?.toLowerCase() || '';
+						const isGpu = modelId.includes('ollama') || ownedBy === 'ollama' || modelId.includes('5090') || modelId.includes('local');
+						const isRag = modelId.includes('bge') || modelId.includes('embedding') || modelId.includes('nomic') || modelId.includes('rag');
+
+						if (selectedCustomCategory === 'gpu') {
+							return isGpu;
+						} else if (selectedCustomCategory === 'rag') {
+							return isRag;
+						} else if (selectedCustomCategory === 'cloud') {
+							return !isGpu && !isRag;
+						}
+						return true;
+					})
 			: items
 					.filter((item) => {
 						if (selectedTag === '') {
@@ -217,11 +236,30 @@
 							return item.model?.direct;
 						}
 					})
+					.filter((item) => {
+						if (selectedCustomCategory === '') {
+							return true;
+						}
+						const modelId = item.model?.id?.toLowerCase() || '';
+						const ownedBy = item.model?.owned_by?.toLowerCase() || '';
+						const isGpu = modelId.includes('ollama') || ownedBy === 'ollama' || modelId.includes('5090') || modelId.includes('local');
+						const isRag = modelId.includes('bge') || modelId.includes('embedding') || modelId.includes('nomic') || modelId.includes('rag');
+
+						if (selectedCustomCategory === 'gpu') {
+							return isGpu;
+						} else if (selectedCustomCategory === 'rag') {
+							return isRag;
+						} else if (selectedCustomCategory === 'cloud') {
+							return !isGpu && !isRag;
+						}
+						return true;
+					})
 	).filter((item) => !(item.model?.info?.meta?.hidden ?? false));
 
 	$: if (
 		selectedTag !== undefined ||
 		selectedConnectionType !== undefined ||
+		selectedCustomCategory !== undefined ||
 		searchValue !== undefined
 	) {
 		resetView();
@@ -608,67 +646,54 @@
 									class="flex gap-1 w-fit text-center text-sm rounded-full bg-transparent px-1.5 whitespace-nowrap"
 									bind:this={tagsContainerElement}
 								>
-									{#if items.find((item) => item.model?.connection_type === 'local') || items.find((item) => item.model?.connection_type === 'external') || items.find((item) => item.model?.direct) || tags.length > 0}
+									{#if items.length > 0 || tags.length > 0}
 										<button
 											class="min-w-fit outline-none px-1.5 py-0.5 {selectedTag === '' &&
-											selectedConnectionType === ''
+											selectedCustomCategory === ''
 												? ''
-												: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition capitalize"
-											aria-pressed={selectedTag === '' && selectedConnectionType === ''}
+												: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition"
 											on:click={() => {
-												selectedConnectionType = '';
+												selectedCustomCategory = '';
 												selectedTag = '';
 											}}
 										>
-											{$i18n.t('All')}
+											全部
 										</button>
-									{/if}
 
-									{#if items.find((item) => item.model?.connection_type === 'local')}
 										<button
-											class="min-w-fit outline-none px-1.5 py-0.5 {selectedConnectionType ===
-											'local'
+											class="min-w-fit outline-none px-1.5 py-0.5 {selectedCustomCategory === 'gpu'
 												? ''
-												: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition capitalize"
-											aria-pressed={selectedConnectionType === 'local'}
+												: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition"
 											on:click={() => {
+												selectedCustomCategory = 'gpu';
 												selectedTag = '';
-												selectedConnectionType = 'local';
 											}}
 										>
-											{$i18n.t('Local')}
+											本地 5090
 										</button>
-									{/if}
 
-									{#if items.find((item) => item.model?.connection_type === 'external')}
 										<button
-											class="min-w-fit outline-none px-1.5 py-0.5 {selectedConnectionType ===
-											'external'
+											class="min-w-fit outline-none px-1.5 py-0.5 {selectedCustomCategory === 'cloud'
 												? ''
-												: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition capitalize"
-											aria-pressed={selectedConnectionType === 'external'}
+												: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition"
 											on:click={() => {
+												selectedCustomCategory = 'cloud';
 												selectedTag = '';
-												selectedConnectionType = 'external';
 											}}
 										>
-											{$i18n.t('External')}
+											云端 API
 										</button>
-									{/if}
 
-									{#if items.find((item) => item.model?.direct)}
 										<button
-											class="min-w-fit outline-none px-1.5 py-0.5 {selectedConnectionType ===
-											'direct'
+											class="min-w-fit outline-none px-1.5 py-0.5 {selectedCustomCategory === 'rag'
 												? ''
-												: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition capitalize"
-											aria-pressed={selectedConnectionType === 'direct'}
+												: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition"
 											on:click={() => {
+												selectedCustomCategory = 'rag';
 												selectedTag = '';
-												selectedConnectionType = 'direct';
 											}}
 										>
-											{$i18n.t('Direct')}
+											RAG 专用
 										</button>
 									{/if}
 
@@ -680,7 +705,7 @@
 													: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition capitalize"
 												aria-pressed={selectedTag === tag}
 												on:click={() => {
-													selectedConnectionType = '';
+													selectedCustomCategory = '';
 													selectedTag = tag;
 												}}
 											>

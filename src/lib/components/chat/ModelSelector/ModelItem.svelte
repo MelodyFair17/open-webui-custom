@@ -42,6 +42,31 @@
 	};
 
 	let showMenu = false;
+
+	let category = 'cloud';
+	let categoryLabel = '云端 API';
+	let categoryColorClass = 'bg-sky-500/15 text-sky-500 border border-sky-500/20';
+
+	$: {
+		const modelId = item.model?.id?.toLowerCase() || '';
+		const ownedBy = item.model?.owned_by?.toLowerCase() || '';
+		const isGpu = modelId.includes('ollama') || ownedBy === 'ollama' || modelId.includes('5090') || modelId.includes('local');
+		const isRag = modelId.includes('bge') || modelId.includes('embedding') || modelId.includes('nomic') || modelId.includes('rag');
+
+		if (isGpu) {
+			category = 'gpu';
+			categoryLabel = '本地 5090';
+			categoryColorClass = 'bg-emerald-500/15 text-emerald-500 border border-emerald-500/20 dark:bg-emerald-400/10 dark:text-emerald-400 dark:border-emerald-400/20';
+		} else if (isRag) {
+			category = 'rag';
+			categoryLabel = 'RAG 专用';
+			categoryColorClass = 'bg-purple-500/15 text-purple-500 border border-purple-500/20 dark:bg-purple-400/10 dark:text-purple-400 dark:border-purple-400/20';
+		} else {
+			category = 'cloud';
+			categoryLabel = '云端 API';
+			categoryColorClass = 'bg-sky-500/15 text-sky-500 border border-sky-500/20 dark:bg-sky-400/10 dark:text-sky-400 dark:border-sky-400/20';
+		}
+	}
 </script>
 
 <button
@@ -90,12 +115,16 @@
 				</Tooltip>
 			</div>
 
-			<div class="flex items-center">
+			<div class="flex items-center gap-1.5">
 				<Tooltip content={`${item.label} (${item.value})`} placement="top-start">
 					<div class="line-clamp-1">
 						{item.label}
 					</div>
 				</Tooltip>
+
+				<span class="text-[9px] font-bold px-1.5 py-0.5 rounded-sm uppercase tracking-wide {categoryColorClass}">
+					{categoryLabel}
+				</span>
 			</div>
 
 			<div class=" shrink-0 flex items-center gap-2">

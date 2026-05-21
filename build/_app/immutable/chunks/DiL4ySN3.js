@@ -1,2 +1,0 @@
-const e="Open WebUI",t="",_=`${t}/api/v1`,s=`${t}/ollama`,a=`${t}/openai`,A=`${t}/api/v1/audio`,o=`${t}/api/v1/images`,I=`${t}/api/v1/retrieval`,i="0.9.5",n="dev-build",E={file_context:!0,vision:!0,file_upload:!0,web_search:!0,image_generation:!0,code_interpreter:!0,terminal:!0,citations:!0,status_updates:!0,usage:void 0,builtin_tools:!0},r=1e3;export{A,E as D,o as I,a as O,r as P,I as R,i as W,t as a,_ as b,s as c,e as d,n as e};
-//# sourceMappingURL=DiL4ySN3.js.map
