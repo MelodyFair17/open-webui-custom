@@ -95,13 +95,24 @@
 /* Glassmorphism Sidebar */
 #sidebar {
 	backdrop-filter: blur(20px) !important;
-	background-color: rgba(249, 250, 251, 0.55) !important;
+	background-color: rgba(249, 250, 251, 0.45) !important;
+	border-inline-end-width: 1px !important;
+	border-inline-end-color: rgba(0, 0, 0, 0.05) !important;
 }
 
 html.dark #sidebar {
-	background-color: rgba(9, 10, 15, 0.6) !important;
+	background-color: rgba(9, 10, 15, 0.65) !important;
 	border-inline-end-width: 1px !important;
 	border-inline-end-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Premium App Layout Gradients */
+.app > div {
+	background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f3f5f8 100%) !important;
+}
+
+html.dark .app > div {
+	background: radial-gradient(circle at 50% 50%, #0e1017 0%, #050608 100%) !important;
 }
 
 /* Deep Carbon Dark Mode theme */
@@ -112,4 +123,105 @@ html.dark {
 	--color-gray-800: #1a1c27 !important;
 	--color-gray-700: #292b3a !important;
 	background-color: #08090d !important;
+}
+
+/* Premium Chat List Item Styling */
+#sidebar-chat-item {
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+#sidebar-chat-item.selected {
+	background-color: rgba(59, 130, 246, 0.08) !important;
+	border-left: 3px solid #3b82f6 !important;
+	border-radius: 0 12px 12px 0 !important;
+	color: #1e3a8a !important;
+	font-weight: 500 !important;
+}
+
+html.dark #sidebar-chat-item.selected {
+	background-color: rgba(99, 102, 241, 0.12) !important;
+	border-left: 3px solid #6366f1 !important;
+	border-radius: 0 12px 12px 0 !important;
+	color: #e0e7ff !important;
+	font-weight: 500 !important;
+}
+
+#sidebar-chat-item:hover:not(.selected) {
+	background-color: rgba(0, 0, 0, 0.03) !important;
+	transform: translateX(2px) !important;
+}
+
+html.dark #sidebar-chat-item:hover:not(.selected) {
+	background-color: rgba(255, 255, 255, 0.03) !important;
+	transform: translateX(2px) !important;
+}
+
+/* Premium Chat Input Container styling */
+#message-input-container {
+	border: 1px solid rgba(0, 0, 0, 0.06) !important;
+	background-color: rgba(255, 255, 255, 0.7) !important;
+	backdrop-filter: blur(16px) !important;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02), 0 1px 3px rgba(0, 0, 0, 0.01) !important;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+#message-input-container:focus-within {
+	border-color: rgba(59, 130, 246, 0.5) !important;
+	box-shadow: 0 4px 24px rgba(59, 130, 246, 0.08), 0 1px 3px rgba(59, 130, 246, 0.02) !important;
+	background-color: #ffffff !important;
+}
+
+html.dark #message-input-container {
+	border: 1px solid rgba(255, 255, 255, 0.05) !important;
+	background-color: rgba(26, 28, 39, 0.4) !important;
+	backdrop-filter: blur(16px) !important;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.dark #message-input-container:focus-within {
+	border-color: rgba(99, 102, 241, 0.5) !important;
+	box-shadow: 0 4px 28px rgba(99, 102, 241, 0.15), 0 1px 3px rgba(99, 102, 241, 0.05) !important;
+	background-color: rgba(26, 28, 39, 0.85) !important;
+}
+
+/* Premium Suggestion Buttons styling */
+.waterfall {
+	background-color: rgba(243, 244, 246, 0.5) !important;
+	border: 1px solid rgba(229, 231, 235, 0.8) !important;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.waterfall:hover {
+	background-color: rgba(243, 244, 246, 0.9) !important;
+	border-color: rgba(59, 130, 246, 0.4) !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08) !important;
+}
+
+html.dark .waterfall {
+	background-color: rgba(26, 28, 39, 0.4) !important;
+	border: 1px solid rgba(255, 255, 255, 0.05) !important;
+	box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+}
+
+html.dark .waterfall:hover {
+	background-color: rgba(26, 28, 39, 0.8) !important;
+	border-color: rgba(99, 102, 241, 0.4) !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 6px 16px rgba(99, 102, 241, 0.15) !important;
+}
+
+/* Slim Sidebar Scrollbar */
+#sidebar *::-webkit-scrollbar {
+	width: 4px !important;
+}
+
+#sidebar *::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.1) !important;
+	border-radius: 10px !important;
+}
+
+html.dark #sidebar *::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.15) !important;
 }

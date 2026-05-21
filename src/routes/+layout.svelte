@@ -474,7 +474,7 @@
 
 			if ($isLastActiveTab) {
 				if ($settings?.notificationEnabled ?? false) {
-					new Notification(`${data.title} • Lingrai`, {
+					new Notification(`${data.title} • ${$WEBUI_NAME}`, {
 						body: timeStr,
 						icon: `${WEBUI_BASE_URL}/static/favicon.png`
 					});
@@ -605,7 +605,7 @@
 
 					if ($isLastActiveTab) {
 						if ($settings?.notificationEnabled ?? false) {
-							new Notification(`${displayTitle} • Lingrai`, {
+							new Notification(`${displayTitle} • ${$WEBUI_NAME}`, {
 								body: content,
 								icon: `${WEBUI_BASE_URL}/static/favicon.png`
 							});
@@ -713,7 +713,7 @@
 
 				if ($isLastActiveTab) {
 					if ($settings?.notificationEnabled ?? false) {
-						new Notification(`${title} • Lingrai`, {
+						new Notification(`${title} • ${$WEBUI_NAME}`, {
 							body: data?.content,
 							icon: `${WEBUI_API_BASE_URL}/users/${data?.user?.id}/profile/image`
 						});
@@ -1130,6 +1130,33 @@
 	onDestroy(() => {
 		bc.close();
 	});
+
+	$: {
+		const isChinese = $i18n.language?.startsWith('zh');
+		const currentConfigName = $config?.name;
+		if (currentConfigName) {
+			if (
+				currentConfigName === 'Open WebUI' ||
+				currentConfigName === 'Lingrai' ||
+				currentConfigName === '凌莱' ||
+				currentConfigName === '灵翎'
+			) {
+				const targetName = isChinese ? '灵翎' : 'Lingrai';
+				if ($WEBUI_NAME !== targetName) {
+					WEBUI_NAME.set(targetName);
+				}
+			} else {
+				if ($WEBUI_NAME !== currentConfigName) {
+					WEBUI_NAME.set(currentConfigName);
+				}
+			}
+		} else {
+			const targetName = isChinese ? '灵翎' : 'Lingrai';
+			if ($WEBUI_NAME !== targetName) {
+				WEBUI_NAME.set(targetName);
+			}
+		}
+	}
 </script>
 
 <svelte:head>
