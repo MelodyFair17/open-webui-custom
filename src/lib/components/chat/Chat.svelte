@@ -3053,19 +3053,19 @@
 					/>
 
 					<div id="chat-pane" class="flex flex-col flex-auto z-10 w-full @container overflow-auto">
-						{#if ($settings?.landingPageMode === 'chat' && !$selectedFolder) || createMessagesList(history, history.currentId).length > 0}
-							<div
-								class=" pb-2.5 flex flex-col justify-between w-full flex-auto overflow-auto h-0 max-w-full z-10 scrollbar-hidden"
-								id="messages-container"
-								bind:this={messagesContainerElement}
-								on:scroll={(e) => {
-									autoScroll =
-										messagesContainerElement.scrollHeight - messagesContainerElement.scrollTop <=
-										messagesContainerElement.clientHeight + 5;
-									isNearTop = messagesContainerElement.scrollTop <= 100;
-								}}
-							>
-								<div class=" h-full w-full flex flex-col">
+						<div
+							class=" pb-2.5 flex flex-col justify-between w-full flex-auto overflow-auto h-0 max-w-full z-10 scrollbar-hidden"
+							id="messages-container"
+							bind:this={messagesContainerElement}
+							on:scroll={(e) => {
+								autoScroll =
+									messagesContainerElement.scrollHeight - messagesContainerElement.scrollTop <=
+									messagesContainerElement.clientHeight + 5;
+								isNearTop = messagesContainerElement.scrollTop <= 100;
+							}}
+						>
+							<div class=" h-full w-full flex flex-col">
+								{#if ($settings?.landingPageMode === 'chat' && !$selectedFolder) || createMessagesList(history, history.currentId).length > 0}
 									<Messages
 										bind:this={messagesRef}
 										chatId={$chatId}
@@ -3089,128 +3089,113 @@
 										bottomPadding={files.length > 0}
 										{onSelect}
 									/>
-								</div>
+								{:else}
+									<Placeholder
+										{history}
+										{selectedModels}
+										bind:files
+										bind:prompt
+										bind:autoScroll
+										bind:selectedToolIds
+										bind:selectedFilterIds
+										bind:imageGenerationEnabled
+										bind:codeInterpreterEnabled
+										bind:webSearchEnabled
+										bind:atSelectedModel
+										bind:showCommands
+										bind:dragged
+										{pendingOAuthTools}
+										toolServers={$toolServers}
+										{stopResponse}
+										{createMessagePair}
+										{onSelect}
+										{onUpload}
+									/>
+								{/if}
 							</div>
+						</div>
 
-							<div class=" pb-2 {dragged ? 'z-0' : 'z-10'}">
-								<MessageInput
-									bind:this={messageInput}
-									{history}
-									{taskIds}
-									{selectedModels}
-									bind:files
-									bind:prompt
-									bind:autoScroll
-									bind:selectedToolIds
-									bind:selectedFilterIds
-									bind:imageGenerationEnabled
-									bind:codeInterpreterEnabled
-									{pendingOAuthTools}
-									bind:webSearchEnabled
-									bind:atSelectedModel
-									bind:showCommands
-									bind:dragged
-									toolServers={$toolServers}
-									{generating}
-									{stopResponse}
-									{createMessagePair}
-									{onUpload}
-									messageQueue={$chatRequestQueues[$chatId] ?? []}
-									{chatTasks}
-									onQueueSendNow={async (id) => {
-										const queue = $chatRequestQueues[$chatId] ?? [];
-										const item = queue.find((m) => m.id === id);
-										if (item) {
-											// Remove from queue
-											chatRequestQueues.update((q) => ({
-												...q,
-												[$chatId]: queue.filter((m) => m.id !== id)
-											}));
-											await stopResponse(false);
-											await tick();
-											await submitPrompt(item.prompt, item.files);
-										}
-									}}
-									onQueueEdit={(id) => {
-										const queue = $chatRequestQueues[$chatId] ?? [];
-										const item = queue.find((m) => m.id === id);
-										if (item) {
-											// Remove from queue
-											chatRequestQueues.update((q) => ({
-												...q,
-												[$chatId]: queue.filter((m) => m.id !== id)
-											}));
-											// Set files and restore prompt to input
-											files = item.files;
-											messageInput?.setText(item.prompt);
-										}
-									}}
-									onQueueDelete={(id) => {
-										const queue = $chatRequestQueues[$chatId] ?? [];
+						<div class=" pb-2 {dragged ? 'z-0' : 'z-10'}">
+							<MessageInput
+								bind:this={messageInput}
+								{history}
+								{taskIds}
+								{selectedModels}
+								bind:files
+								bind:prompt
+								bind:autoScroll
+								bind:selectedToolIds
+								bind:selectedFilterIds
+								bind:imageGenerationEnabled
+								bind:codeInterpreterEnabled
+								{pendingOAuthTools}
+								bind:webSearchEnabled
+								bind:atSelectedModel
+								bind:showCommands
+								bind:dragged
+								toolServers={$toolServers}
+								{generating}
+								{stopResponse}
+								{createMessagePair}
+								{onUpload}
+								messageQueue={$chatRequestQueues[$chatId] ?? []}
+								{chatTasks}
+								onQueueSendNow={async (id) => {
+									const queue = $chatRequestQueues[$chatId] ?? [];
+									const item = queue.find((m) => m.id === id);
+									if (item) {
+										// Remove from queue
 										chatRequestQueues.update((q) => ({
 											...q,
 											[$chatId]: queue.filter((m) => m.id !== id)
 										}));
-									}}
-									onChange={(data) => {
-										if (!$temporaryChatEnabled) {
-											saveDraft(data, $chatId);
-										}
-									}}
-									on:submit={async (e) => {
-										clearDraft($chatId);
-										if (e.detail || files.length > 0) {
-											await tick();
+										await stopResponse(false);
+										await tick();
+										await submitPrompt(item.prompt, item.files);
+									}
+								}}
+								onQueueEdit={(id) => {
+									const queue = $chatRequestQueues[$chatId] ?? [];
+									const item = queue.find((m) => m.id === id);
+									if (item) {
+										// Remove from queue
+										chatRequestQueues.update((q) => ({
+											...q,
+											[$chatId]: queue.filter((m) => m.id !== id)
+										}));
+										// Set files and restore prompt to input
+										files = item.files;
+										messageInput?.setText(item.prompt);
+									}
+								}}
+								onQueueDelete={(id) => {
+									const queue = $chatRequestQueues[$chatId] ?? [];
+									chatRequestQueues.update((q) => ({
+										...q,
+										[$chatId]: queue.filter((m) => m.id !== id)
+									}));
+								}}
+								onChange={(data) => {
+									if (!$temporaryChatEnabled) {
+										saveDraft(data, $chatId);
+									}
+								}}
+								on:submit={async (e) => {
+									clearDraft($chatId);
+									if (e.detail || files.length > 0) {
+										await tick();
 
-											submitHandler(e.detail);
-										}
-									}}
-								/>
+										submitHandler(e.detail);
+									}
+								}}
+							/>
 
-								<div
-									class="absolute bottom-1 text-xs text-gray-500 text-center line-clamp-1 right-0 left-0"
-								>
-									<!-- {$i18n.t('LLMs can make mistakes. Verify important information.')} -->
-								</div>
+							<div
+								class="absolute bottom-1 text-xs text-gray-500 text-center line-clamp-1 right-0 left-0"
+							>
+								<!-- {$i18n.t('LLMs can make mistakes. Verify important information.')} -->
 							</div>
-						{:else}
-							<div class="flex items-center h-full">
-								<Placeholder
-									{history}
-									{selectedModels}
-									bind:messageInput
-									bind:files
-									bind:prompt
-									bind:autoScroll
-									bind:selectedToolIds
-									bind:selectedFilterIds
-									bind:imageGenerationEnabled
-									bind:codeInterpreterEnabled
-									bind:webSearchEnabled
-									bind:atSelectedModel
-									bind:showCommands
-									bind:dragged
-									{pendingOAuthTools}
-									toolServers={$toolServers}
-									{stopResponse}
-									{createMessagePair}
-									{onSelect}
-									{onUpload}
-									onChange={(data) => {
-										if (!$temporaryChatEnabled) {
-											saveDraft(data);
-										}
-									}}
-									on:submit={async (e) => {
-										clearDraft();
-										if (e.detail || files.length > 0) {
-											await tick();
-											submitHandler(e.detail);
-										}
-									}}
-								/>
-							</div>
-						{/if}
+						</div>
 					</div>
 				</Pane>
 

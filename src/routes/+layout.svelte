@@ -14,6 +14,7 @@
 		user,
 		settings,
 		theme,
+		models,
 		WEBUI_NAME,
 		WEBUI_VERSION,
 		WEBUI_DEPLOYMENT_ID,
@@ -779,19 +780,50 @@
 			localStorage.setItem('theme', newTheme);
 			theme.set(newTheme);
 
-			// Apply theme classes (mirrors logic from chat/Settings/General.svelte)
-			const themes = ['dark', 'light', 'oled-dark'];
-			let themeToApply =
-				newTheme === 'oled-dark' ? 'dark' : newTheme === 'her' ? 'light' : newTheme;
+			// Apply theme classes
+			const classesToRemove = ['dark', 'light', 'her', 'oled-dark'];
+			classesToRemove.forEach((c) => {
+				document.documentElement.classList.remove(c);
+			});
+
+			let themeToApply = newTheme;
 			if (newTheme === 'system') {
 				themeToApply = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 			}
-			themes
-				.filter((e) => e !== themeToApply)
-				.forEach((e) => {
-					e.split(' ').forEach((cls) => document.documentElement.classList.remove(cls));
-				});
-			themeToApply.split(' ').forEach((cls) => document.documentElement.classList.add(cls));
+
+			if (themeToApply === 'dark') {
+				document.documentElement.classList.add('dark');
+				document.documentElement.style.setProperty('--color-gray-800', '#333');
+				document.documentElement.style.setProperty('--color-gray-850', '#262626');
+				document.documentElement.style.setProperty('--color-gray-900', '#171717');
+				document.documentElement.style.setProperty('--color-gray-950', '#0d0d0d');
+			} else if (themeToApply === 'oled-dark') {
+				document.documentElement.classList.add('dark');
+				document.documentElement.classList.add('oled-dark');
+				document.documentElement.style.setProperty('--color-gray-800', '#101010');
+				document.documentElement.style.setProperty('--color-gray-850', '#050505');
+				document.documentElement.style.setProperty('--color-gray-900', '#000000');
+				document.documentElement.style.setProperty('--color-gray-950', '#000000');
+			} else if (themeToApply === 'her') {
+				document.documentElement.classList.add('light');
+				document.documentElement.classList.add('her');
+			} else if (themeToApply === 'light') {
+				document.documentElement.classList.add('light');
+			}
+
+			const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+			if (metaThemeColor) {
+				metaThemeColor.setAttribute(
+					'content',
+					themeToApply === 'dark'
+						? '#171717'
+						: themeToApply === 'oled-dark'
+							? '#000000'
+							: themeToApply === 'her'
+								? '#983724'
+								: '#ffffff'
+				);
+			}
 			return;
 		}
 		if (event.type === 'models:refresh') {
@@ -899,6 +931,8 @@
 				window.applyTheme();
 			}
 		}
+
+
 
 		if (window?.electronAPI) {
 			const info = await window.electronAPI.send({
