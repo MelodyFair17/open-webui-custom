@@ -4,12 +4,11 @@ services:
       context: .
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
-    container_name: open-webui
+    container_name: adaptive-gateway-webui-custom
     volumes:
-      - open-webui:/app/backend/data
-      - ./build:/app/build
+      - adaptive-gateway_webui_data:/app/backend/data
     ports:
-      - ${OPEN_WEBUI_PORT-3000}:8080
+      - ${OPEN_WEBUI_PORT-3001}:8080
     environment:
       - 'OLLAMA_BASE_URL=http://ollama:11434'
       - 'WEBUI_SECRET_KEY='
@@ -18,4 +17,5 @@ services:
     restart: unless-stopped
 
 volumes:
-  open-webui: {}
+  adaptive-gateway_webui_data:
+    external: true
