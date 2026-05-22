@@ -18,6 +18,8 @@ services:
       - 'ANTHROPIC_API_KEY=your-anthropic-api-key-here'
       - 'ENABLE_SIGNUP=true'
       - 'WEBUI_SECRET_KEY=your-webui-secret-key-change-this'
+    extra_hosts:
+      - litellm:host-gateway
     restart: unless-stopped
     networks:
       - default
