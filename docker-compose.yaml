@@ -10,25 +10,21 @@ services:
     ports:
       - ${OPEN_WEBUI_PORT-3001}:8080
     environment:
-      - 'OPENAI_API_BASE_URL=http://litellm:4000/v1'
-      - 'OPENAI_API_KEY=sk-admin-gateway-2024'
-      - 'LITELLM_MASTER_KEY=sk-admin-gateway-2024'
-      - 'DEEPSEEK_API_KEY=sk-86f6ace65d0d4cb799b795c15fc00af0'
-      - 'OLLAMA_BASE_URL='
-      - 'ANTHROPIC_API_KEY=your-anthropic-api-key-here'
-      - 'ENABLE_SIGNUP=true'
-      - 'WEBUI_SECRET_KEY=your-webui-secret-key-change-this'
-    external_links:
-      - adaptive-gateway-litellm:litellm
-    restart: unless-stopped
+      - 'OPENAI_API_BASE_URLS=http://adaptive-gateway-litellm:4000/v1'
+      - 'OPENAI_API_KEYS=sk-admin-gateway-2024'
+      - 'ENABLE_OPENAI_API=True'
+      - 'ENABLE_OLLAMA_API=False'
+      - 'WEBUI_SECRET_KEY='
     networks:
       - default
-
-networks:
-  default:
-    name: adaptive-gateway_default
-    external: true
+      - gateway
+    restart: unless-stopped
 
 volumes:
   adaptive-gateway_webui_data:
     external: true
+
+networks:
+  gateway:
+    external: true
+    name: adaptive-gateway_default
