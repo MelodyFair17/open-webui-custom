@@ -10,13 +10,22 @@ services:
     ports:
       - ${OPEN_WEBUI_PORT-3001}:8080
     environment:
-      - 'OLLAMA_BASE_URL=http://ollama:11434'
-      - 'OPENAI_API_BASE_URLS=http://host.docker.internal:4000/v1'
-      - 'OPENAI_API_KEYS=sk-1234'
-      - 'WEBUI_SECRET_KEY='
-    extra_hosts:
-      - host.docker.internal:host-gateway
+      - 'OPENAI_API_BASE_URL=http://litellm:4000/v1'
+      - 'OPENAI_API_KEY=sk-admin-gateway-2024'
+      - 'LITELLM_MASTER_KEY=sk-admin-gateway-2024'
+      - 'DEEPSEEK_API_KEY=sk-86f6ace65d0d4cb799b795c15fc00af0'
+      - 'OLLAMA_BASE_URL='
+      - 'ANTHROPIC_API_KEY=your-anthropic-api-key-here'
+      - 'ENABLE_SIGNUP=true'
+      - 'WEBUI_SECRET_KEY=your-webui-secret-key-change-this'
     restart: unless-stopped
+    networks:
+      - default
+
+networks:
+  default:
+    name: adaptive-gateway_default
+    external: true
 
 volumes:
   adaptive-gateway_webui_data:
