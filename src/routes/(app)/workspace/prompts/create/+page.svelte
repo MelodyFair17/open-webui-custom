@@ -34,7 +34,7 @@
 		window.addEventListener('message', async (event) => {
 			console.log(event);
 			if (
-				!['https://openwebui.com', 'https://www.openwebui.com', 'http://localhost:9999'].includes(
+				!['https://Lingrai.com', 'https://www.Lingrai.com', 'http://localhost:9999'].includes(
 					event.origin
 				)
 			)

@@ -206,13 +206,13 @@
 									{$i18n.t('Help')}
 								</div>
 								<div class=" text-xs text-gray-500">
-									{$i18n.t('Discover how to use Open WebUI and seek support from the community.')}
+									{$i18n.t('Discover how to use Lingrai and seek support from the community.')}
 								</div>
 							</div>
 
 							<a
 								class="flex-shrink-0 text-xs font-medium underline"
-								href="https://docs.openwebui.com/"
+								href="https://docs.Lingrai.com/"
 								target="_blank"
 							>
 								{$i18n.t('Documentation')}
@@ -228,10 +228,10 @@
 									/>
 								</a>
 
-								<a href="https://twitter.com/OpenWebUI" target="_blank">
+								<a href="https://twitter.com/Lingrai" target="_blank">
 									<img
 										alt="X (formerly Twitter) Follow"
-										src="https://img.shields.io/twitter/follow/OpenWebUI"
+										src="https://img.shields.io/twitter/follow/Lingrai"
 									/>
 								</a>
 
@@ -254,7 +254,7 @@
 
 								{#if $config?.license_metadata}
 									<a
-										href="https://docs.openwebui.com/enterprise"
+										href="https://docs.Lingrai.com/enterprise"
 										target="_blank"
 										class="text-gray-500 mt-0.5"
 									>
@@ -279,7 +279,7 @@
 								{:else}
 									<a
 										class=" text-xs hover:underline"
-										href="https://docs.openwebui.com/enterprise"
+										href="https://docs.Lingrai.com/enterprise"
 										target="_blank"
 									>
 										<span class="text-gray-500">
@@ -421,7 +421,7 @@
 
 								<div class="mt-2 text-xs text-gray-400 dark:text-gray-500">
 									<a
-										href="https://docs.openwebui.com/reference/api-endpoints"
+										href="https://docs.Lingrai.com/reference/api-endpoints"
 										target="_blank"
 										class=" text-gray-300 font-medium underline"
 									>
@@ -462,7 +462,7 @@
 										<span class=" font-medium">{$i18n.t('Warning')}:</span>
 										<span
 											><a
-												href="https://docs.openwebui.com/reference/env-configuration#jwt_expires_in"
+												href="https://docs.Lingrai.com/reference/env-configuration#jwt_expires_in"
 												target="_blank"
 												class=" underline"
 												>{$i18n.t('No expiration can pose security risks.')}

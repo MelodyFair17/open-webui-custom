@@ -394,7 +394,7 @@ JWT_EXPIRES_IN = PersistentConfig('JWT_EXPIRES_IN', 'auth.jwt_expiry', os.enviro
 if JWT_EXPIRES_IN.value == '-1':
     log.warning(
         "⚠️  SECURITY WARNING: JWT_EXPIRES_IN is set to '-1'\n"
-        '    See: https://docs.openwebui.com/reference/env-configuration\n'
+        '    See: https://docs.Lingrai.com/reference/env-configuration\n'
     )
 
 ####################################
@@ -968,12 +968,12 @@ CUSTOM_NAME = os.environ.get('CUSTOM_NAME', '')
 
 if CUSTOM_NAME:
     try:
-        r = requests.get(f'https://api.openwebui.com/api/v1/custom/{CUSTOM_NAME}')
+        r = requests.get(f'https://api.Lingrai.com/api/v1/custom/{CUSTOM_NAME}')
         data = r.json()
         if r.ok:
             if 'logo' in data:
                 WEBUI_FAVICON_URL = url = (
-                    f'https://api.openwebui.com{data["logo"]}' if data['logo'][0] == '/' else data['logo']
+                    f'https://api.Lingrai.com{data["logo"]}' if data['logo'][0] == '/' else data['logo']
                 )
 
                 r = requests.get(url, stream=True)
@@ -983,7 +983,7 @@ if CUSTOM_NAME:
                         shutil.copyfileobj(r.raw, f)
 
             if 'splash' in data:
-                url = f'https://api.openwebui.com{data["splash"]}' if data['splash'][0] == '/' else data['splash']
+                url = f'https://api.Lingrai.com{data["splash"]}' if data['splash'][0] == '/' else data['splash']
 
                 r = requests.get(url, stream=True)
                 if r.status_code == 200:
@@ -1074,7 +1074,7 @@ if OLLAMA_BASE_URL == '' and OLLAMA_API_BASE_URL != '':
 if ENV == 'prod':
     if OLLAMA_BASE_URL == '/ollama' and not K8S_FLAG:
         if USE_OLLAMA_DOCKER.lower() == 'true':
-            # if you use all-in-one docker container (Open WebUI + Ollama)
+            # if you use all-in-one docker container (Lingrai + Ollama)
             # with the docker build arg USE_OLLAMA=true (--build-arg="USE_OLLAMA=true") this only works with http://localhost:11434
             OLLAMA_BASE_URL = 'http://localhost:11434'
         else:

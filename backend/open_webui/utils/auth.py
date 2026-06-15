@@ -113,8 +113,8 @@ def get_license_data(app, key):
 
     if key:
         us = [
-            'https://api.openwebui.com',
-            'https://licenses.api.openwebui.com',
+            'https://api.Lingrai.com',
+            'https://licenses.api.Lingrai.com',
         ]
         try:
             for u in us:

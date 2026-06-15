@@ -876,7 +876,7 @@
 
 	const windowMessageEventHandler = async (event) => {
 		if (
-			!['https://openwebui.com', 'https://www.openwebui.com', 'http://localhost:9999'].includes(
+			!['https://Lingrai.com', 'https://www.Lingrai.com', 'http://localhost:9999'].includes(
 				event.origin
 			)
 		) {
@@ -1054,7 +1054,7 @@
 		if (backendConfig) {
 			// Save Backend Status to Store
 			await config.set(backendConfig);
-			await WEBUI_NAME.set(backendConfig.name === 'Open WebUI' ? 'Lingrai' : backendConfig.name);
+			await WEBUI_NAME.set(backendConfig.name === 'Lingrai' ? 'Lingrai' : backendConfig.name);
 
 			if ($config) {
 				await setupSocket($config.features?.enable_websocket ?? true);
@@ -1170,7 +1170,7 @@
 		const currentConfigName = $config?.name;
 		if (currentConfigName) {
 			if (
-				currentConfigName === 'Open WebUI' ||
+				currentConfigName === 'Lingrai' ||
 				currentConfigName === 'Lingrai' ||
 				currentConfigName === '凌莱' ||
 				currentConfigName === '灵翎'
