@@ -26,10 +26,12 @@
 	import OnBoarding from '$lib/components/OnBoarding.svelte';
 	import SensitiveInput from '$lib/components/common/SensitiveInput.svelte';
 	import { redirect } from '@sveltejs/kit';
+	import LandingPage from '$lib/components/LandingPage.svelte';
 
 	const i18n = getContext('i18n');
 
 	let loaded = false;
+	let showLanding = true;
 
 	let mode = $config?.features.enable_ldap ? 'ldap' : 'signin';
 
@@ -200,6 +202,9 @@
 	</title>
 </svelte:head>
 
+{#if showLanding}
+	<LandingPage on:close={() => showLanding = false} />
+{:else}
 <OnBoarding
 	bind:show={onboarding}
 	getStartedHandler={() => {
@@ -603,3 +608,4 @@
 		{/if}
 	{/if}
 </div>
+{/if}
